@@ -189,3 +189,24 @@ Let's implement custom validation.
 1. Listen for invalid events on each input and update the page with a custom error
    - Make sure the error element is linked to the right input
    - Make sure the input is marked valid at first, then invalid when it fails validation
+
+### Re-validating
+
+Right now it's a little confusing for the user as the input stays marked invalid even when they type something new. We should mark each input as valid and remove the error message when the user inputs something.
+
+1. Add an event listener for `input` events
+1. Mark the input valid and remove the error message
+
+## Styling
+
+We have a functional, accessible solution now, but it could be improved with some styling. It's common to style validation messages with a "danger" colour like red, and sometimes to mark invalid inputs with a different coloured border. You could also use warning icons to make errors even more obvious.
+
+### Challenge
+
+1. Style the error messages
+1. Style invalid inputs
+1. Add any other styles you like to make it look good
+
+## Stretch: focus management
+
+It's sometimes nice to focus the first invalid input in the form, so the user can immediately fix the problem. Add some code to your form's submit handler to find the first invalid input, then focus it.
