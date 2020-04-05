@@ -2,6 +2,8 @@
 
 In this workshop you'll learn how to validate user input in the browser and present error messages accessibly.
 
+![final solution](https://user-images.githubusercontent.com/9408641/78499870-44475700-774b-11ea-8f3a-c2e8aae65090.gif)
+
 ## Setup
 
 1. Clone this repo
@@ -206,6 +208,8 @@ We have a functional, accessible solution now, but it could be improved with som
 1. Style the error messages
 1. Style invalid inputs
 1. Add any other styles you like to make it look good
+
+![final solution](https://user-images.githubusercontent.com/9408641/78499870-44475700-774b-11ea-8f3a-c2e8aae65090.gif)
 
 ## Stretch: focus management
 
