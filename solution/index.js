@@ -1,10 +1,10 @@
-const form = document.getElementById("form");
+const form = document.querySelector("form");
 
 // disable native validation since we're creating our own with JS
 form.setAttribute("novalidate", "");
 
 form.addEventListener("submit", (event) => {
-  // check the validity of all inputs: returns true if all valid, otherwise false
+  // check the validity of all inputs: returns true if all valid
   // also fires the "invalid" event on all invalid inputs
   const allInputsValid = event.target.checkValidity();
   if (!allInputsValid) {
@@ -30,6 +30,7 @@ const inputs = form.querySelectorAll("input");
 inputs.forEach((i) => {
   i.setAttribute("aria-invalid", false);
   i.addEventListener("invalid", handleInvalidInput);
+  i.addEventListener("input", clearValidity);
 });
 
 function handleInvalidInput(event) {
@@ -53,4 +54,10 @@ function handleInvalidInput(event) {
   // error element should directly follow input
   const errorContainer = input.nextElementSibling;
   errorContainer.textContent = message;
+}
+
+function clearValidity(event) {
+  const input = event.target;
+  input.setAttribute("aria-invalid", "false");
+  input.nextElementSibling.textContent = "";
 }
