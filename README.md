@@ -159,7 +159,9 @@ function handleInvalidInput(event) {
 }
 ```
 
-This interface has properties for every kind of error, with the value of each set to true if that error occurred. For example an empty required input will show: `{ valueMissing: true, typeMismatch: false, ... }`. We can write an `if`/`else` statement to check whether each property we're interested in is true. If it is we can show a custom error on the page:
+This interface has properties for every kind of error, with the value of each set to true if that error occurred. For example an empty required input will show: `{ valueMissing: true, typeMismatch: false, ... }`. Here's a list of [all the validity properties](https://developer.mozilla.org/en-US/docs/Web/API/ValidityState).
+
+We can write an `if`/`else` statement to check whether each property we're interested in is true. If it is we can show a custom error on the page:
 
 ```js
 let message = "";
