@@ -14,7 +14,7 @@ In this workshop you'll learn how to validate user input in the browser and pres
 
 Client-side validation is important for a good user experience—you can quickly give the user feedback when they need to change a value they've entered. For example if passwords must be a certain length you can tell them immediately, rather than waiting for the form to submit to the server and receive an invalid response.
 
-You _should not_ rely entirely on client-side validation however. You can never trust anything that happens in the browse: users can use devtools to mess with attributes and elements to bypass validation. You **always** need to validate user input on the server as well, for security.
+You _should not_ rely entirely on client-side validation however. You can never trust anything that happens in the browser: users can use devtools to mess with attributes and elements to bypass validation. You **always** need to validate user input on the server as well, for security.
 
 ## Requirements
 
