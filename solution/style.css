@@ -50,6 +50,7 @@ input {
 }
 
 input:focus {
+  outline: 0;
   border-color: hsl(280, 70%, 80%);
 }
 
