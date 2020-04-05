@@ -85,15 +85,27 @@ If you inspect the password input in Chrome's devtools you should be able to see
 
 ## HTML5 validation
 
-Browsers support pretty complex validation on inputs:
+Now we need to tell the user when they enter invalid values. Browsers support pretty complex validation on inputs:
 
 ```html
-<label for="email">Password</label> <input type="email" id="email" required />
+<input type="email" id="email" required />
 ```
 
-When a form containing the above input is submitted the browser will validate both that the user entered a value (because of the `required`) _and_ that the value is an email (because of the `type="email"). Here's a [full list of validation attributes](https://developer.mozilla.org/en-US/docs/Web/Guide/HTML/HTML5/Constraint_validation#Intrinsic_and_basic_constraints).
+When a form containing the above input is submitted the browser will validate both that the user entered a value (because of the `required`) _and_ that the value is an email (because of the `type="email").
 
-You can even style inputs based on their validity using pseudo-classes like `:invalid`, `:valid` and `:required`.
+We can even specify a regex the value must match using the `pattern` attribute. This input will only be valid if it contains at least one digit.:
+
+```html
+<input type="password" id="password" required pattern=".*\d.*" />
+```
+
+Here's a [full list of validation attributes](https://developer.mozilla.org/en-US/docs/Web/Guide/HTML/HTML5/Constraint_validation#Intrinsic_and_basic_constraints).
+
+You can even style inputs based on their validity using CSS pseudo-classes like `:invalid`, `:valid` and `:required`.
+
+### Challenge
+
+Ensure each input meets our validation requirements above. If you submit the form with invalid values the browser should stop the submission and show a warning.
 
 ### Advantages
 
@@ -102,20 +114,78 @@ You can even style inputs based on their validity using pseudo-classes like `:in
 
 ### Disadvantages
 
-- Cannot change the styles
-- Inputs are marked invalid before the user touches them
+- Cannot style the error messages
 - [Not exposed to most screen readers](https://adrianroselli.com/2019/02/avoid-default-field-validation.html)
+- Inputs are marked invalid before the user touches them
+  - E.g. `input:invalid { border: 1px solid red; }` will make a `required` input red straight away
 
 ## Custom validation
 
-We can hijack the browser's validation with JavaScript to show our own messages. It's important to associate the message with the right input—it might be obvious visually which message is for each input, but a screen reader user needs a programmatic connection.
+The advantage of _starting_ with the HTML5 validation attributes is that if our JS fails to load or breaks the user at least gets basic validation. We should make sure to add all our custom attributes using JS, so they're only present if we have function custom validation.
 
-We can use the `aria-describedby` attribute to provide descriptive information about an element:
+First we need to disabled the native validation by setting the `novalidate` on the form element. This prevents the built-in errors from appearing.
 
 ```js
-<label for="email">Password</label>
-<input type="email" id="email" aria-describedby="emailError" aria-invalid="true" required>
-<div id="emailError">Please enter an email</div>
+const form = document.querySelector("form");
+form.setAttribute("novalidate", "");
 ```
 
-Whenever this input is focused a screen reader will read out the label first, then the type of input, then any description. So in this case something like "Email, required invalid data edit text. (pause) Please enter an email".
+Then we can listen for the form's `submit` event and check whether any inputs are invalid using `formElement.checkValidity()`.
+
+```js
+const allInputsValid = form.checkValidity();
+```
+
+This method returns true if _all_ inputs are valid, otherwise it returns false. If any of the inputs are invalid we want to call `event.preventDefault()` to stop the form from submitting.
+
+The `checkValidity()` method also causes inputs that failed validation to fire an `invalid` event. We can add event listeners for this to our inputs, allowing us to run custom JS to show the right error message.
+
+```js
+const inputs = form.querySelectorAll("input");
+inputs.forEach((input) => {
+  input.addEventListener("invalid", handleInvalidInput);
+});
+```
+
+We should also mark each input as valid for now—it's confusing for users to be told their inputs are invalid before they've tried entering anything. You can set `aria-invalid="false"` on each input to do this.
+
+The final step is showing a custom message on the page depending on what type of validation error occured. We can access the "validity state" of an input via the `input.validity` property:
+
+```js
+function handleInvalidInput(event) {
+  console.log(event.target.validity);
+}
+```
+
+This interface has properties for every kind of error, with the value of each set to true if that error occurred. For example an empty required input will show: `{ valueMissing: true, typeMismatch: false, ... }`. We can write an `if`/`else` statement to check whether each property we're interested in is true. If it is we can show a custom error on the page:
+
+```js
+let message = "";
+if (validity.valueMissing) {
+  message = "Please enter an email address";
+} else if (validity.typeMismatch) {
+  // ...
+}
+```
+
+We should also communicate the invalid state of the input here by setting `aria-invalid="true"`.
+
+We need to ensure our error message is associated with the correct input: we want it to be read out by a screen reader when the user focuses the input. We can achieve this using `aria-describedby` just like with our password requirements. It can take multiple IDs for multiple descriptions (the order of the IDs determines the order they will be read out).
+
+```html
+<input id="email" type="email" aria-describedby="emailError" required />
+<div id="emailError">Please enter an email address</div>
+```
+
+Whenever this input is focused a screen reader will read out the label first, then the type of input, then any description. So in this case something like "Email, required invalid data edit text. (pause) Please enter an email address".
+
+### Challenge
+
+Let's implement custom validation.
+
+1. Disable the native form validation
+1. Listen for submit events and check whether all the inputs are valid
+   - If they are not stop the form from submitting
+1. Listen for invalid events on each input and update the page with a custom error
+   - Make sure the error element is linked to the right input
+   - Make sure the input is marked valid at first, then invalid when it fails validation
