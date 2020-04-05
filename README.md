@@ -214,3 +214,10 @@ We have a functional, accessible solution now, but it could be improved with som
 ## Stretch: focus management
 
 It's sometimes nice to focus the first invalid input in the form, so the user can immediately fix the problem. Add some code to your form's submit handler to find the first invalid input, then focus it.
+
+## Resources
+
+- [Constraint Validation | MDN](https://developer.mozilla.org/en-US/docs/Web/Guide/HTML/HTML5/Constraint_validation) (built-in HTML validation)
+- [Native form validation—part 1](https://medium.com/samsung-internet-dev/native-form-validation-part-1-bf8e35099f1d) (the limitations of HTML/CSS-only validation)
+- [Required attribute requirements](https://developer.paciellogroup.com/blog/2019/02/required-attribute-requirements/) (explains the JS/ARIA stuff we need for accessible validation)
+- [Describing aria-describedby](https://developer.paciellogroup.com/blog/2018/09/describing-aria-describedby/) (summarises how `aria-describedby` works)
