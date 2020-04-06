@@ -32,7 +32,7 @@ Users generally expect required fields to be [marked with an asterisk](https://w
 
 #### Challenge
 
-Add a required indicator to both inputs.
+Add a visual required indicator to both inputs.
 
 <details>
 <summary>Solution</summary>
