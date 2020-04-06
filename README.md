@@ -57,7 +57,7 @@ Add a visual required indicator to both inputs.
 
 The "Email" label should be enough to communicate what should be entered in the first input, but the user currently has no idea what our password requirements are. It's important to provide this information.
 
-We can just put a `<div>` after the label, but this won't be associated with the input (which means screen readers will ignore it). The `aria-describedby` attribute is used to provide descriptive information about an element: you provide it with one or more IDs of elements that _describe_ this one.
+We can add a `<div>` containing more information after the label, but this won't be associated with the input (which means screen readers will ignore it). To link this to the input we can use the `aria-describedby` attribute on the input. This attribute takes the ID of another element that provides additional description (it can also take multiple IDs for multiple descriptive elements).
 
 #### Challenge
 
