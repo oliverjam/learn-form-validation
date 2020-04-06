@@ -28,7 +28,7 @@ Before we actually implement validation we need to make sure the user is aware o
 
 ### Required values
 
-Users generally expect required fields to be [marked with an asterix](https://www.nngroup.com/articles/required-fields/). We can add one inside the `<label>`. However this will cause screen readers to read out the label as "email star", which is not correct. We should wrap the asterix in an element with `aria-hidden="true"` to ensure it isn't read out.
+Users generally expect required fields to be [marked with an asterisk](https://www.nngroup.com/articles/required-fields/). We can add one inside the `<label>`. However this will cause screen readers to read out the label as "email star", which is not correct. We should wrap the asterisk in an element with `aria-hidden="true"` to ensure it isn't read out.
 
 #### Challenge
 
