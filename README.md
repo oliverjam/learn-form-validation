@@ -16,7 +16,7 @@ Client-side validation is important for a good user experience—you can quickly
 
 You _should not_ rely entirely on client-side validation however. You can never trust anything that happens in the browser: users can use devtools to mess with attributes and elements to bypass validation. You **always** need to validate user input on the server as well, for security.
 
-## Requirements
+## Communicating requirements
 
 Our form has two inputs: one for an email address and one for a password. These are the requirements we need to validate:
 
@@ -83,7 +83,7 @@ We can add a `<div>` containing more information after the label, but this won't
 
 If you inspect the password input in Chrome's devtools you should be able to see the accessible name (from the label) and description (from the div) in the "Accessibility tab".
 
-<!-- insert devtools screenshot -->
+![Accessibility tab example](https://user-images.githubusercontent.com/9408641/78671737-99b06f00-78d7-11ea-8afa-bf4c13fea6ae.png)
 
 ## HTML5 validation
 
