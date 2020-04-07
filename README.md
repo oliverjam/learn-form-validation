@@ -109,6 +109,33 @@ You can even style inputs based on their validity using CSS pseudo-classes like 
 
 Ensure each input meets our validation requirements above. If you submit the form with invalid values the browser should stop the submission and show a warning.
 
+<details>
+<summary>Hint if you don't like regexp</summary>
+
+Here's a regular expression for validating that a string contains at least one letter and one number: `(?=.*[A-z])(?=.*\d)[A-z\d]+`
+
+</details>
+
+<details>
+<summary>Solution</summary>
+
+```html
+<input id="email" type="email" required />
+<!-- ... labels etc -->
+<input
+  id="password"
+  type="password"
+  aria-describedby="passwordRequirements"
+  required
+  pattern="(?=.*[A-z])(?=.*\d)[A-z\d]+"
+  minlength="8"
+/>
+```
+
+</details>
+
+</details>
+
 ### Advantages
 
 - Very simple to implement
