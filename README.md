@@ -150,76 +150,119 @@ Here's a regular expression for validating that a string contains at least one n
 
 The advantage of _starting_ with the HTML5 validation attributes is that if our JS fails to load or breaks the user at least gets basic validation.
 
-First we need to disable the native validation by setting `novalidate` on the form element. This prevents the built-in errors from appearing.
+First we need to disable the native validation by setting the `novalidate` attribute on the form element. This prevents the built-in errors from appearing.
+
+Then we can listen for the form's `submit` event and check whether any inputs are invalid using `formElement.checkValidity()`.
+
+This method returns true if _all_ inputs are valid, otherwise it returns false. If any of the inputs are invalid we want to call `event.preventDefault()` to stop the form from submitting.
+
+### Challenge
+
+1. Open `workshop/index.js`
+1. Disable the native form validation
+1. Listen for submit events and check whether all the inputs are valid
+   - If they are not prevent the form from submitting
+
+<details>
+<summary>Solution</summary>
 
 ```js
 const form = document.querySelector("form");
 form.setAttribute("novalidate", "");
-```
 
-Then we can listen for the form's `submit` event and check whether any inputs are invalid using `formElement.checkValidity()`.
-
-```js
-const allInputsValid = form.checkValidity();
-```
-
-This method returns true if _all_ inputs are valid, otherwise it returns false. If any of the inputs are invalid we want to call `event.preventDefault()` to stop the form from submitting.
-
-The `checkValidity()` method also causes inputs that failed validation to fire an `invalid` event. We can add event listeners for this to our inputs, allowing us to run custom JS to show the right error message.
-
-```js
-const inputs = form.querySelectorAll("input");
-inputs.forEach((input) => {
-  input.addEventListener("invalid", handleInvalidInput);
+form.addEventListener("submit", (event) => {
+  const allInputsValid = form.checkValidity();
+  if (!allInputsValid) {
+    event.preventDefault();
+  }
 });
 ```
 
-We should also mark each input as valid for now—it's confusing for users to be told their inputs are invalid before they've tried entering anything. You can set `aria-invalid="false"` on each input to do this.
+</details>
 
-The final step is showing a custom message on the page depending on what type of validation error occured. We can access the "validity state" of an input via the `input.validity` property:
+## Handling invalid inputs
 
-```js
-function handleInvalidInput(event) {
-  console.log(event.target.validity);
-}
-```
+We need to communicate whether inputs are valid or invalid to assistive tech. The `aria-invalid` attribute does this. Each input should have `aria-invalid="false"` set at first, since the user hasn't typed anything yet. We'll update it to true when the input fails validation.
 
-This interface has properties for every kind of error, with the value of each set to true if that error occurred. For example an empty required input will show: `{ valueMissing: true, typeMismatch: false, ... }`. Here's a list of [all the validity properties](https://developer.mozilla.org/en-US/docs/Web/API/ValidityState).
-
-We can write an `if`/`else` statement to check whether each property we're interested in is true. If it is we can show a custom error on the page:
+The `checkValidity()` method causes inputs that failed validation to fire an `invalid` event. We can add event listeners for this to our inputs, allowing us to run custom JS to show the right error message.
 
 ```js
-let message = "";
-if (validity.valueMissing) {
-  message = "Please enter an email address";
-} else if (validity.typeMismatch) {
-  // ...
-}
+inputElement.addEventListener("invalid", handleInvalidInput);
 ```
 
-We should also communicate the invalid state of the input here by setting `aria-invalid="true"`.
+The final step is showing a validation message depending on what type of validation error occurred. We can access the default browser message via the `input.validationMessage` property. E.g. for a `required` input this might be `"Please fill out this field".
 
-We need to ensure our error message is associated with the correct input: we want it to be read out by a screen reader when the user focuses the input. We can achieve this using `aria-describedby` just like with our password requirements. It can take multiple IDs for multiple descriptions (the order of the IDs determines the order they will be read out).
+### Challenge
+
+1. Get a reference to all the inputs
+1. Mark each input as valid
+1. For each input listen for the `invalid` event
+1. Mark the input as _invalid_ and log its validation message
+
+<details>
+<summary>Solution</summary>
+
+```js
+const inputs = form.querySelectorAll("input");
+
+inputs.forEach((input) => {
+  input.setAttribute("aria-invalid", false);
+  input.addEventListener("invalid", () => {
+    input.setAttribute("aria-invalid", true);
+    console.log(input.validationMessage);
+  });
+});
+```
+
+</details>
+
+## Showing the validation message
+
+We need to put the validation message on the page so the user knows what they did wrong. The message should be associated with the correct input: we want it to be read out by a screen reader when the user focuses the input.
+
+We can achieve this using `aria-describedby` just like with our password requirements. It can take multiple IDs for multiple descriptions (the order of the IDs determines the order they will be read out).
 
 ```html
 <input id="email" type="email" aria-describedby="emailError" required />
 <div id="emailError">Please enter an email address</div>
 ```
 
-Whenever this input is focused a screen reader will read out the label first, then the type of input, then any description. So in this case something like "Email, required invalid data edit text. (pause) Please enter an email address".
+Whenever this input is focused a screen reader will read out the label first, then the type of input, then any description. So in this case something like "Email, required invalid data, edit text. (pause) Please enter an email address".
 
 ### Challenge
 
-Let's implement custom validation.
+1. Create a div to contain the message
+1. Set attributes on the input and div so they are linked together
+1. Put the validation message inside the div so the user can read it
 
-1. Disable the native form validation
-1. Listen for submit events and check whether all the inputs are valid
-   - If they are not prevent the form from submitting
-1. Listen for invalid events on each input and update the page with a custom error
-   - Make sure the error element is linked to the right input
-   - Make sure the input is marked valid at first, then invalid when it fails validation
+<details>
+<summary>Solution</summary>
 
-### Re-validating
+```html
+<!-- lots of stuff removed to simplify example -->
+
+<input id="email" aria-describedby="emailError" />
+<div id="emailError"></div>
+
+<input id="password" aria-describedby="passwordRequirements passwordError" />
+<div id="passwordError"></div>
+```
+
+```js
+inputs.forEach((input) => {
+  // ...
+  input.addEventListener("invalid", () => {
+    // ...
+    const errorId = input.id + "Error";
+    const errorContainer = form.querySelector("#" + errorId);
+    errorContainer.textContent = input.validationMessage;
+  });
+});
+```
+
+</details>
+
+## Re-validating
 
 Right now it's a little confusing for the user as the input stays marked invalid even when they type something new. We should mark each input as valid and remove the error message when the user inputs something.
 
@@ -238,9 +281,40 @@ We have a functional, accessible solution now, but it could be improved with som
 
 ![final solution](https://user-images.githubusercontent.com/9408641/78499870-44475700-774b-11ea-8f3a-c2e8aae65090.gif)
 
-## Stretch: focus management
+## Stretch: custom messages
 
-It's sometimes nice to focus the first invalid input in the form, so the user can immediately fix the problem. Add some code to your form's submit handler to find the first invalid input, then focus it.
+The default browser messages could be better. They don't contain specific, actionable feedback. E.g. if a `pattern` doesn't match the user sees "Please match the requested format". It would be more useful to show "Please enter at least one number".
+
+We need to know what _type_ of error occurred to show the right custom message. The `input.validity` property contains this information.
+
+This interface has properties for every kind of error. For example an empty required input will show:
+
+```js
+{
+  valueMissing: true,
+  typeMismatch: false,
+  patternMismatch: false,
+  // ... etc
+}
+```
+
+Here's a list of [all the validity properties](https://developer.mozilla.org/en-US/docs/Web/API/ValidityState).
+
+We can write an `if`/`else` statement to check whether each property we're interested in is true. If it is we can show a custom error on the page:
+
+```js
+let message = "";
+if (validity.valueMissing) {
+  message = "Please enter an email address";
+} else if (validity.typeMismatch) {
+  // ...
+}
+```
+
+### Challenge
+
+1. Edit your `invalid` handler to check the `validity` interface
+1. Show custom error messages based on the input's ID and what validation failed.
 
 ## Resources
 

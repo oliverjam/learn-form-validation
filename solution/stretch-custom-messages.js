@@ -9,6 +9,18 @@ form.addEventListener("submit", (event) => {
   }
 });
 
+const messages = {
+  email: {
+    valueMissing: "Please enter an email.",
+    typeMismatch: "Please enter a valid email.",
+  },
+  password: {
+    valueMissing: "Please enter a password.",
+    patternMismatch: "Please include at least one number.",
+    tooShort: "Please enter at least 8 characters.",
+  },
+};
+
 const inputs = form.querySelectorAll("input");
 inputs.forEach((input) => {
   input.setAttribute("aria-invalid", false);
@@ -21,9 +33,25 @@ function handleInvalidInput(event) {
 
   input.setAttribute("aria-invalid", true);
 
+  const validity = input.validity;
+
+  // get the right set of messages for this specific input
+  const inputMessages = messages[input.id];
+  let message = "";
+
+  if (validity.valueMissing) {
+    message = inputMessages.valueMissing;
+  } else if (validity.typeMismatch) {
+    message = inputMessages.typeMismatch;
+  } else if (validity.patternMismatch) {
+    message = inputMessages.patternMismatch;
+  } else if (validity.tooShort) {
+    message = inputMessages.tooShort;
+  }
+
   const errorId = input.id + "Error";
   const errorContainer = form.querySelector("#" + errorId);
-  errorContainer.textContent = input.validationMessage;
+  errorContainer.textContent = message;
 }
 
 function clearValidity(event) {
