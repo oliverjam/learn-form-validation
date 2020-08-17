@@ -200,6 +200,13 @@ The final step is showing a validation message depending on what type of validat
 1. Mark the input as _invalid_ and log its validation message
 
 <details>
+<summary>Hint</summary>
+
+You can access the element that triggered an event using `event.target` inside the event handler function.
+
+</details>
+
+<details>
 <summary>Solution</summary>
 
 ```js
@@ -207,7 +214,7 @@ const inputs = form.querySelectorAll("input");
 
 inputs.forEach((input) => {
   input.setAttribute("aria-invalid", false);
-  input.addEventListener("invalid", handleInvalidInput;
+  input.addEventListener("invalid", handleInvalidInput);
 });
 
 function handleInvalidInput(event) {
