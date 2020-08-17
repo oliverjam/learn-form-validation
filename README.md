@@ -190,7 +190,7 @@ The `checkValidity()` method causes inputs that failed validation to fire an `in
 inputElement.addEventListener("invalid", handleInvalidInput);
 ```
 
-The final step is showing a validation message depending on what type of validation error occurred. We can access the default browser message via the `input.validationMessage` property. E.g. for a `required` input this might be `"Please fill out this field".
+The final step is showing a validation message depending on what type of validation error occurred. We can access the default browser message via the `input.validationMessage` property. E.g. for a `required` input this might be `"Please fill out this field"`.
 
 ### Challenge
 
@@ -207,11 +207,14 @@ const inputs = form.querySelectorAll("input");
 
 inputs.forEach((input) => {
   input.setAttribute("aria-invalid", false);
-  input.addEventListener("invalid", () => {
-    input.setAttribute("aria-invalid", true);
-    console.log(input.validationMessage);
-  });
+  input.addEventListener("invalid", handleInvalidInput;
 });
+
+function handleInvalidInput(event) {
+  const input = event.target;
+  input.setAttribute("aria-invalid", true);
+  console.log(input.validationMessage);
+}
 ```
 
 </details>
