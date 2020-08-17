@@ -10,6 +10,6 @@
   "author": "Oliver Phillips <hello@oliverjam.es> (https://oliverjam.es/)",
   "license": "ISC",
   "devDependencies": {
-    "browser-sync": "^2.26.7"
+    "browser-sync": "^2.26.12"
   }
 }
