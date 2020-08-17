@@ -30,37 +30,17 @@ Before we actually implement validation we need to make sure the user is aware o
 
 Users generally expect required fields to be [marked with an asterisk](https://www.nngroup.com/articles/required-fields/). We can add one inside the `<label>`. However this will cause screen readers to read out the label as "email star", which is not correct. We should wrap the asterisk in an element with `aria-hidden="true"` to ensure it isn't read out.
 
-#### Challenge
-
-Add a visual required indicator to both inputs.
-
-<details>
-<summary>Solution</summary>
-
-```html
-<label for="email">
-  Email
-  <span aria-hidden="true">*</span>
-</label>
-<input id="email" />
-
-<label for="password">
-  Password
-  <span aria-hidden="true">*</span>
-</label>
-<input id="password" />
-```
-
-</details>
-
 ### Different types of value
 
-The "Email" label should be enough to communicate what should be entered in the first input, but the user currently has no idea what our password requirements are. It's important to provide this information.
+If we don't list our password requirements users will have to guess what they are.
 
-We can add a `<div>` containing more information after the label, but this won't be associated with the input (which means screen readers will ignore it). To link this to the input we can use the `aria-describedby` attribute on the input. This attribute takes the ID of another element that provides additional description (it can also take multiple IDs for multiple descriptive elements).
+We can add a `<div>` with this information after the label, but this won't be associated with the input (which means screen readers will ignore it).
+
+We need to use the [`aria-describedby`](https://developer.paciellogroup.com/blog/2018/09/describing-aria-describedby/) attribute on the input. This attribute takes the IDs of other elements that provide additional info. This will link our div to the input so screen readers read out the extra info as if it were part of the label.
 
 #### Challenge
 
+1. Add a visual required indicator to both inputs.
 1. Add instructions containing our password requirements
 1. Associate the instructions with the input using `aria-describedby`
 
