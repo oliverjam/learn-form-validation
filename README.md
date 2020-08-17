@@ -2,7 +2,7 @@
 
 In this workshop you'll learn how to validate user input in the browser and present error messages accessibly.
 
-![final solution](https://user-images.githubusercontent.com/9408641/78499870-44475700-774b-11ea-8f3a-c2e8aae65090.gif)
+![Final solution](https://user-images.githubusercontent.com/9408641/90390317-09ebb000-e083-11ea-9bc5-06b465207690.png)
 
 ## Setup
 
@@ -339,7 +339,7 @@ input[aria-invalid="true"] {
 
 </details>
 
-![final solution](https://user-images.githubusercontent.com/9408641/78499870-44475700-774b-11ea-8f3a-c2e8aae65090.gif)
+![initial solution](https://user-images.githubusercontent.com/9408641/90390223-e4f73d00-e082-11ea-8b29-19a208cbda95.png)
 
 ## Stretch: custom messages
 
@@ -375,6 +375,8 @@ if (validity.valueMissing) {
 
 1. Edit your `invalid` handler to check the `validity` interface
 1. Show custom error messages based on the input's ID and what validation failed.
+
+![Final solution](https://user-images.githubusercontent.com/9408641/90390317-09ebb000-e083-11ea-9bc5-06b465207690.png)
 
 ## Resources
 
