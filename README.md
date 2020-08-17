@@ -22,7 +22,7 @@ Our form has two inputs: one for an email address and one for a password. These 
 
 1. Both values are present
 1. The email value is a valid email address
-1. The password contains at least one number and letter, and is at least 8 characters long
+1. The password contains at least one number, and is at least 8 characters long
 
 Before we actually implement validation we need to make sure the user is aware of the requirements. There's nothing more frustrating than trying to guess what you need to do to be able to submit a form.
 
@@ -95,10 +95,10 @@ Now we need to tell the user when they enter invalid values. Browsers support pr
 
 When a form containing the above input is submitted the browser will validate both that the user entered a value (because of the `required`) _and_ that the value is an email (because of the `type="email"`).
 
-We can even specify a regex the value must match using the `pattern` attribute. This input will only be valid if it contains at least one digit.:
+We can even specify a regex the value must match using the `pattern` attribute. This input will be invalid if it contains whitespace characters:
 
 ```html
-<input type="password" id="password" required pattern=".*\d.*" />
+<input type="text" pattern="\S" />
 ```
 
 Here's a [full list of validation attributes](https://developer.mozilla.org/en-US/docs/Web/Guide/HTML/HTML5/Constraint_validation#Intrinsic_and_basic_constraints).
@@ -112,7 +112,7 @@ Ensure each input meets our validation requirements above. If you submit the for
 <details>
 <summary>Hint if you don't like regexp</summary>
 
-Here's a regular expression for validating that a string contains at least one letter and one number: `(?=.*[A-z])(?=.*\d)[A-z\d]+`
+Here's a regular expression for validating that a string contains at least one number: `.*\d.*`
 
 </details>
 
@@ -127,7 +127,7 @@ Here's a regular expression for validating that a string contains at least one l
   type="password"
   aria-describedby="passwordRequirements"
   required
-  pattern="(?=.*[A-z])(?=.*\d)[A-z\d]+"
+  pattern=".*\d.*"
   minlength="8"
 />
 ```
