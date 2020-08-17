@@ -259,15 +259,12 @@ Whenever this input is focused a screen reader will read out the label first, th
 ```
 
 ```js
-inputs.forEach((input) => {
+function handleInvalidInput(event) {
   // ...
-  input.addEventListener("invalid", () => {
-    // ...
-    const errorId = input.id + "Error";
-    const errorContainer = form.querySelector("#" + errorId);
-    errorContainer.textContent = input.validationMessage;
-  });
-});
+  const errorId = input.id + "Error";
+  const errorContainer = form.querySelector("#" + errorId);
+  errorContainer.textContent = input.validationMessage;
+}
 ```
 
 </details>
