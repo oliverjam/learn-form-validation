@@ -90,10 +90,10 @@ If you inspect the password input in Chrome's devtools you should be able to see
 Now we need to tell the user when they enter invalid values. Browsers support pretty complex validation on inputs:
 
 ```html
-<input type="email" id="email" required />
+<input type="email" required />
 ```
 
-When a form containing the above input is submitted the browser will validate both that the user entered a value (because of the `required`) _and_ that the value is an email (because of the `type="email").
+When a form containing the above input is submitted the browser will validate both that the user entered a value (because of the `required`) _and_ that the value is an email (because of the `type="email"`).
 
 We can even specify a regex the value must match using the `pattern` attribute. This input will only be valid if it contains at least one digit.:
 
@@ -134,8 +134,6 @@ Here's a regular expression for validating that a string contains at least one l
 
 </details>
 
-</details>
-
 ### Advantages
 
 - Very simple to implement
@@ -145,14 +143,14 @@ Here's a regular expression for validating that a string contains at least one l
 
 - Cannot style the error messages
 - [Not exposed to most screen readers](https://adrianroselli.com/2019/02/avoid-default-field-validation.html)
-- Inputs are marked invalid before the user touches them
-  - E.g. `input:invalid { border: 1px solid red; }` will make a `required` input red straight away
+- Inputs are marked invalid before the user types anything
+  - E.g. `input:invalid { border-color: red; }` will mark a `required` input red straight away
 
 ## Custom validation
 
-The advantage of _starting_ with the HTML5 validation attributes is that if our JS fails to load or breaks the user at least gets basic validation. We should make sure to add all our custom attributes using JS, so they're only present if we have function custom validation.
+The advantage of _starting_ with the HTML5 validation attributes is that if our JS fails to load or breaks the user at least gets basic validation.
 
-First we need to disabled the native validation by setting the `novalidate` on the form element. This prevents the built-in errors from appearing.
+First we need to disable the native validation by setting `novalidate` on the form element. This prevents the built-in errors from appearing.
 
 ```js
 const form = document.querySelector("form");
@@ -216,7 +214,7 @@ Let's implement custom validation.
 
 1. Disable the native form validation
 1. Listen for submit events and check whether all the inputs are valid
-   - If they are not stop the form from submitting
+   - If they are not prevent the form from submitting
 1. Listen for invalid events on each input and update the page with a custom error
    - Make sure the error element is linked to the right input
    - Make sure the input is marked valid at first, then invalid when it fails validation
