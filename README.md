@@ -276,6 +276,28 @@ Right now it's a little confusing for the user as the input stays marked invalid
 1. Add an event listener for `input` events
 1. Mark the input valid and remove the error message
 
+<details>
+<summary>Solution</summary>
+
+```js
+inputs.forEach((input) => {
+  // ...
+  input.addEventListener("input", clearValidity);
+});
+
+function clearValidity(event) {
+  const input == event.target;
+
+  input.setAttribute("aria-invalid", false);
+
+  const errorId = input.id + "Error";
+  const errorContainer = form.querySelector("#" + errorId);
+  errorContainer.textContent = "";
+}
+```
+
+</details>
+
 ## Styling
 
 We have a functional, accessible solution now, but it could be improved with some styling. It's common to style validation messages with a "danger" colour like red, and sometimes to mark invalid inputs with a different coloured border. You could also use warning icons to make errors even more obvious.
@@ -285,6 +307,37 @@ We have a functional, accessible solution now, but it could be improved with som
 1. Style the error messages
 1. Style invalid inputs
 1. Add any other styles you like to make it look good
+
+<details>
+<summary>Hint</summary>
+
+You can target elements in CSS by their attributes:
+
+```css
+div[some-attribute="true"] {
+  color: red;
+}
+```
+
+</details>
+
+<details>
+<summary>Solution</summary>
+
+```css
+/* lots of styles omitted for clarity */
+
+input[aria-invalid="true"] {
+  border-color: hsl(340, 70%, 50%);
+}
+
+.error {
+  margin-top: 0.5rem;
+  color: hsl(340, 70%, 50%);
+}
+```
+
+</details>
 
 ![final solution](https://user-images.githubusercontent.com/9408641/78499870-44475700-774b-11ea-8f3a-c2e8aae65090.gif)
 
