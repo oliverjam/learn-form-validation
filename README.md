@@ -266,7 +266,7 @@ inputs.forEach((input) => {
 });
 
 function clearValidity(event) {
-  const input == event.target;
+  const input = event.target;
 
   input.setAttribute("aria-invalid", false);
 
